@@ -81,10 +81,19 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
         />
+        <TextView
+                android:layout_toRightOf="@id/app_img_container"
+                android:layout_below="@id/desc"
+                android:id="@+id/version"
+                android:text='@{"Version: "+packageInfo.versionName+"("+packageInfo.longVersionCode+")"}'
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+        />
         <LinearLayout
                 android:layout_toRightOf="@id/app_img_container"
                 android:id="@+id/info"
-                android:layout_below="@id/desc"
+                android:layout_below="@id/version"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -124,8 +133,8 @@
                         android:drawableLeft="@drawable/circle_green"
                         android:drawablePadding="5dp"
                         android:layout_marginLeft="5dp"
-                        android:id="@+id/is_debug"
-                        android:text='@{"Version:"+packageInfo.versionName+"("+packageInfo.longVersionCode+")"}'
+                        android:id="@+id/isDebug"
+                        android:text='@{isDebugBuild?"Debug":"Release"}'
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                 />

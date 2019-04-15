@@ -49,6 +49,7 @@ class AppListAdapter(private var apps: List<PackageInfo>,
             binding.appName=item.applicationInfo.loadLabel(itemView.context.packageManager).toString()
             binding.appIcon=item.applicationInfo.loadIcon(itemView.context.packageManager)
             binding.appInfo=item.applicationInfo
+            binding.packageInfo=item
 
             val isDebuggable = 0 != item.applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE
             binding.isDebugBuild=isDebuggable
