@@ -37,6 +37,10 @@
                 type="android.content.pm.ApplicationInfo"/>
 
         <variable
+                name="packageInfo"
+                type="android.content.pm.PackageInfo"/>
+
+        <variable
                 name="listener"
                 type="com.droidmonk.appinfo.AppListActionListener"/>
     </data>
@@ -121,7 +125,7 @@
                         android:drawablePadding="5dp"
                         android:layout_marginLeft="5dp"
                         android:id="@+id/is_debug"
-                        android:text='@{isDebugBuild?"Debug":"Signed"}'
+                        android:text='@{"Version:"+packageInfo.versionName+"("+packageInfo.longVersionCode+")"}'
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                 />
@@ -143,7 +147,7 @@
                     android:layout_margin="2dp"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:background="@color/colorPrimary"
+                    android:background="@color/lightGrey"
                     android:id="@+id/tv_playstore"
                     android:text="Playstore"
                     android:onClick="@{(view) ->listener.goToPlayStore()}"
@@ -159,7 +163,7 @@
                     android:layout_margin="2dp"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:background="@color/colorPrimary"
+                    android:background="@color/lightGrey"
                     android:id="@+id/tv_share"
                     android:text="Share"
                     android:onClick="@{(view) ->listener.shareAPK()}"
@@ -175,7 +179,7 @@
                     android:layout_margin="2dp"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:background="@color/colorPrimary"
+                    android:background="@color/lightGrey"
                     android:id="@+id/tv_settings"
                     android:text="Settings"
                     android:onClick="@{(view) ->listener.openAppSettings()}"

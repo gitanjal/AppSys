@@ -8,8 +8,12 @@ import android.hardware.Sensor.TYPE_ALL
 import android.hardware.SensorManager
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.Toolbar
 import android.util.DisplayMetrics
 import android.util.Log
+import com.droidmonk.appinfo.AppFragment.Companion.KEY_FILTER_DOWNLOADED
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_main.view.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -18,6 +22,10 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        setSupportActionBar(toolbar)
+
+       // toolbar_title.text=resources.getString(R.string.app_name)
 
         setupViewFragment()
       //  getAppList()
@@ -70,6 +78,7 @@ class MainActivity : AppCompatActivity() {
             Log.d("tag",app.applicationInfo.minSdkVersion.toString())
             Log.d("tag",app.applicationInfo.publicSourceDir.toString())
             Log.d("tag",app.applicationInfo.loadIcon(packageManager).toString())
+
 
             if (app.applicationInfo.flags and (ApplicationInfo.FLAG_UPDATED_SYSTEM_APP or ApplicationInfo.FLAG_SYSTEM) > 0) {
                 // It is a system app

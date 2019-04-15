@@ -1,31 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent" xmlns:app="http://schemas.android.com/apk/res-auto"
+              tools:context=".MainFragment" android:orientation="vertical">
 
-    <data>
+    <android.support.design.widget.TabLayout
+            android:id="@+id/tabs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    <android.support.v4.view.ViewPager
+            android:id="@+id/pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <import type="android.view.View" />
+    </android.support.v4.view.ViewPager>
 
-        <variable
-                name="viewmodel"
-                type="com.droidmonk.appinfo.MainViewModel" />
-
-    </data>
-
-    <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:clickable="true"
-                android:orientation="vertical">
-
-        <android.support.v7.widget.RecyclerView
-                android:id="@+id/app_list"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:items="@{viewmodel.items}"
-        >
-
-        </android.support.v7.widget.RecyclerView>
-    </RelativeLayout>
-</layout>
-
+</LinearLayout>

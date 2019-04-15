@@ -15,7 +15,7 @@
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
             android:elevation="4dp"
             app:theme="@style/Toolbar"
-    />
+    ></android.support.v7.widget.Toolbar>
     <FrameLayout
             android:layout_below="@id/toolbar"
             android:id="@+id/contentFrame"

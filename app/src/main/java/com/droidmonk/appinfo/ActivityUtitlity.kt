@@ -11,6 +11,9 @@ import android.text.TextUtils.replace
 fun <T : ViewModel> AppCompatActivity.obtainViewModel(viewModelClass: Class<T>) =
     ViewModelProviders.of(this, ViewModelFactory.getInstance(application)).get(viewModelClass)
 
+fun <T : ViewModel> Fragment.obtainViewModel(viewModelClass: Class<T>) =
+    ViewModelProviders.of(this, activity?.application?.let { ViewModelFactory.getInstance(it) }).get(viewModelClass)
+
 
 fun AppCompatActivity.replaceFragmentInActivity(fragment: Fragment, frameId: Int) {
     supportFragmentManager.transact {
