@@ -1,17 +1,20 @@
-package com.droidmonk.appinfo
+package com.droidmonk.appinfo.apps
 
 import android.app.Application
 import android.arch.lifecycle.ViewModel
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
-import android.util.Log
+import com.droidmonk.appinfo.SingleLiveEvent
 
-class MainViewModel(val app: Application) : ViewModel() {
+class AppListViewModel(val app: Application) : ViewModel() {
 
     var items: ArrayList<PackageInfo> = ArrayList()//= emptyList<PackageInfo>() as ArrayList<PackageInfo>
     var itemsDownloaded: ArrayList<PackageInfo> = ArrayList() //= emptyList<PackageInfo>() as ArrayList<PackageInfo>
     var itemsSystem: ArrayList<PackageInfo> = ArrayList()//= emptyList<PackageInfo>() as ArrayList<PackageInfo>
     var itemsDebug: ArrayList<PackageInfo> = ArrayList() //= emptyList<PackageInfo>() as ArrayList<PackageInfo>
+
+    internal val openAppEvent = SingleLiveEvent<String>()
+
 
     fun start(filterKey: String)
     {

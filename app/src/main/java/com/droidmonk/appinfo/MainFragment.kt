@@ -8,10 +8,10 @@ import android.support.v4.view.ViewPager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.droidmonk.appinfo.AppFragment.Companion.KEY_FILTER_DEBUG
-import com.droidmonk.appinfo.AppFragment.Companion.KEY_FILTER_DOWNLOADED
-import com.droidmonk.appinfo.AppFragment.Companion.KEY_FILTER_SYS
-import kotlinx.android.synthetic.main.fragment_main.view.*
+import com.droidmonk.appinfo.apps.AppFragment
+import com.droidmonk.appinfo.apps.AppFragment.Companion.KEY_FILTER_DEBUG
+import com.droidmonk.appinfo.apps.AppFragment.Companion.KEY_FILTER_DOWNLOADED
+import com.droidmonk.appinfo.apps.AppFragment.Companion.KEY_FILTER_SYS
 
 /**
  * A simple [Fragment] subclass.
@@ -37,27 +37,26 @@ class MainFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_main, container, false)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onResume() {
+        super.onResume()
 
-        activity?.actionBar?.setTitle("Hello")
 
-        fragmentList.add(AppFragment.newInstance(KEY_FILTER_DOWNLOADED))
-        fragmentList.add(AppFragment.newInstance(KEY_FILTER_SYS))
-        fragmentList.add(AppFragment.newInstance(KEY_FILTER_DEBUG))
+        if(fragmentList.size==0) {
+            fragmentList.add(AppFragment.newInstance(KEY_FILTER_DOWNLOADED))
+            fragmentList.add(AppFragment.newInstance(KEY_FILTER_SYS))
+            fragmentList.add(AppFragment.newInstance(KEY_FILTER_DEBUG))
 
-        fragmentTitleList.add("Downloaded")
-        fragmentTitleList.add("System")
-        fragmentTitleList.add("Debug")
+            fragmentTitleList.add("Downloaded")
+            fragmentTitleList.add("System")
+            fragmentTitleList.add("Debug")
+        }
+        pager = activity?.findViewById(R.id.pager)!!
+        tabs = activity?.findViewById(R.id.tabs)!!
 
-        pager= activity?.findViewById(R.id.pager)!!
-        tabs= activity?.findViewById(R.id.tabs)!!
-
-        adapter= PagerAdapter(this!!.fragmentManager!!,fragmentList,fragmentTitleList)
-        pager.adapter=adapter
+        adapter = PagerAdapter(this!!.childFragmentManager!!, fragmentList, fragmentTitleList)
+        pager.adapter = adapter
 
         tabs.setupWithViewPager(pager)
 
     }
-
 }

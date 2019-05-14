@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.droidmonk.appinfo
+package com.droidmonk.appinfo.apps
 
 import android.content.pm.PackageInfo
 import android.databinding.BindingAdapter

@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View"/>
+        <import type="java.lang.Integer"/>
+        <import type="android.view.View.OnClickListener"/>
+
+        <variable
+                name="appName"
+                type="String"/>
+
+        <variable
+                name="appIcon"
+                type="android.graphics.drawable.Drawable"/>
+
+        <variable
+                name="isDebugBuild"
+                type="Boolean"/>
+
+        <variable
+                name="appInfo"
+                type="android.content.pm.ApplicationInfo"/>
+
+        <variable
+                name="packageInfo"
+                type="android.content.pm.PackageInfo"/>
+
+        <variable
+                name="viewModel"
+                type="com.droidmonk.appinfo.appdetails.AppDetailsViewModel"/>
+
+
+    </data>
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:orientation="vertical"
+                  android:padding="16dp"
+                  tools:context=".appdetails.AppDetailsFragment">
+
+        <LinearLayout
+                android:paddingVertical="15dp"
+                android:gravity="center_horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+            <ImageView
+
+                    android:layout_gravity="center_horizontal"
+                    android:id="@+id/appLogo"
+                    android:layout_width="50dp" android:layout_height="50dp"
+                    app:img_drawable="@{viewModel.appIcon}"
+            />
+
+            <TextView
+                    android:id="@+id/title"
+                    android:text="@{viewModel.appName}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+            />
+            <TextView
+                    android:id="@+id/packageName"
+                    android:text="@{viewModel.packageInfo.packageName}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+            />
+
+            <TextView
+                    android:id="@+id/appVersion"
+                    android:text='@{"Version: "+viewModel.packageInfo.versionName+"("+viewModel.packageInfo.versionCode+")"}'
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+            />
+            <LinearLayout
+                    android:layout_marginTop="5dp"
+                    android:id="@+id/actions"
+                    android:layout_below="@id/info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="3"
+            >
+                <TextView
+                        android:padding="10dp"
+                        android:textStyle="bold"
+                        android:textSize="12sp"
+                        android:layout_margin="2dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:background="@color/lightGrey"
+                        android:id="@+id/tv_playstore"
+                        android:text="Playstore"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                />
+
+                <TextView
+                        android:padding="10dp"
+                        android:textStyle="bold"
+                        android:textSize="12sp"
+                        android:layout_margin="2dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:background="@color/lightGrey"
+                        android:id="@+id/tv_share"
+                        android:text="Share"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                />
+
+                <TextView
+                        android:padding="10dp"
+                        android:textStyle="bold"
+                        android:textSize="12sp"
+                        android:layout_margin="2dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:background="@color/lightGrey"
+                        android:id="@+id/tv_settings"
+                        android:text="Settings"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                />
+            </LinearLayout>
+
+
+            <TextView
+                    android:id="@+id/apkmirror"
+                    android:text="Search on APKMirror"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:padding="10dp"
+            />
+        </LinearLayout>
+        <LinearLayout
+                android:id="@+id/app_img_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="5dp"
+                android:orientation="vertical">
+
+            <LinearLayout
+                    android:paddingVertical="10dp"
+                    android:layout_below="@id/minContainer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+            >
+                <TextView
+                        android:drawableLeft="@drawable/circle_blue"
+                        android:drawablePadding="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Build :"
+                        android:textAllCaps="true"
+                        android:textColor="@color/gray"
+                        android:textStyle="bold"
+                        android:layout_weight=".4"
+                />
+                <TextView
+                        android:id="@+id/build"
+                        android:text='@{viewModel.build?"Debug":"Release"}'
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".6"
+                />
+            </LinearLayout>
+
+            <LinearLayout
+                    android:id="@+id/minContainer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="10dp"
+            >
+                <TextView
+                        android:drawableLeft="@drawable/circle_blue"
+                        android:drawablePadding="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Minimum SDK :"
+                        android:textAllCaps="true"
+                        android:textColor="@color/gray"
+                        android:textStyle="bold"
+                />
+                <TextView
+
+
+                        android:id="@+id/min"
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                />
+            </LinearLayout>
+            <LinearLayout
+                    android:id="@+id/maxContainer"
+                    android:paddingVertical="10dp"
+                    android:layout_below="@id/minContainer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+            >
+                <TextView
+                        android:drawableLeft="@drawable/circle_blue"
+                        android:drawablePadding="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Target SDK :"
+                        android:textAllCaps="true"
+                        android:textColor="@color/gray"
+                        android:textStyle="bold"
+                        android:layout_weight=".4"
+                />
+                <TextView
+                        android:id="@+id/target"
+                        android:text='@{String.valueOf(viewModel.appInfoLive.targetSdkVersion)}'
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".6"
+                />
+            </LinearLayout>
+            <LinearLayout
+                    android:id="@+id/installDate"
+                    android:paddingVertical="10dp"
+                    android:layout_below="@id/maxContainer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+            >
+                <TextView
+                        android:drawableLeft="@drawable/circle_blue"
+                        android:drawablePadding="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Installed on :"
+                        android:textAllCaps="true"
+                        android:textColor="@color/gray"
+                        android:textStyle="bold"
+                        android:layout_weight=".4"
+                />
+                <TextView
+                        android:id="@+id/install"
+                        android:text='@{viewModel.appInstallDate}'
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".6"
+                />
+            </LinearLayout>
+            <LinearLayout
+                    android:id="@+id/updateDate"
+                    android:paddingVertical="10dp"
+                    android:layout_below="@id/installDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+            >
+                <TextView
+                        android:drawableLeft="@drawable/circle_blue"
+                        android:drawablePadding="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Last updated on :"
+                        android:textAllCaps="true"
+                        android:textColor="@color/gray"
+                        android:textStyle="bold"
+                        android:layout_weight=".4"
+                />
+                <TextView
+                        android:id="@+id/lastUpdate"
+                        android:text='@{viewModel.appUpdateDate}'
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".6"
+                />
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+</layout>

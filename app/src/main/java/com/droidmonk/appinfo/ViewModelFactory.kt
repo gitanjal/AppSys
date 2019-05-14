@@ -3,13 +3,21 @@ package com.droidmonk.appinfo
 import android.app.Application
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
+import com.droidmonk.appinfo.appdetails.AppDetailsViewModel
+import com.droidmonk.appinfo.apps.AppListViewModel
 
 class ViewModelFactory private constructor (private val app:Application): ViewModelProvider.NewInstanceFactory() {
+
+
+
     override fun <T : ViewModel?> create(modelClass: Class<T>)=
         with(modelClass)
         {
             when{
-                isAssignableFrom(MainViewModel::class.java)->MainViewModel(app)
+                isAssignableFrom(AppListViewModel::class.java)-> AppListViewModel(
+                    app
+                )
+                isAssignableFrom(AppDetailsViewModel::class.java)->AppDetailsViewModel(app)
                 else -> {
                     throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
                 }
@@ -24,6 +32,9 @@ class ViewModelFactory private constructor (private val app:Application): ViewMo
                 INSTANCE ?: ViewModelFactory(application)
                     .also { INSTANCE = it }
             }
+
+
+
 
     }
 }

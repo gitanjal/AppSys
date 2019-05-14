@@ -1,4 +1,4 @@
-package com.droidmonk.appinfo
+package com.droidmonk.appinfo.apps
 
 import android.content.Context
 import android.content.pm.ApplicationInfo
@@ -6,30 +6,17 @@ import android.content.pm.PackageInfo
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
-import android.widget.Toast.LENGTH_LONG
 import com.droidmonk.appinfo.databinding.AppItemBinding
-import android.support.v4.content.ContextCompat.startActivity
 import android.content.Intent
 import android.net.Uri
-import android.os.Environment
-import android.os.Environment.DIRECTORY_DOWNLOADS
-import android.os.Environment.getExternalStoragePublicDirectory
-import android.support.v4.content.ContextCompat.startActivity
-import android.content.pm.PackageManager
+import android.os.Build
 import android.provider.Settings
-import android.support.v4.content.FileProvider
-import android.util.Log
 import android.view.View
-import java.io.*
-import android.support.v4.content.ContextCompat.startActivity
-import android.support.v4.content.ContextCompat.startActivity
-import android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS
-import com.google.common.reflect.Reflection.getPackageName
 
 
 class AppListAdapter(private var apps: List<PackageInfo>,
-                             private val mainViewModel: MainViewModel) : RecyclerView.Adapter<AppListAdapter.AppsViewHolder>(){
+                             private val mainViewModel: AppListViewModel
+) : RecyclerView.Adapter<AppListAdapter.AppsViewHolder>(){
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): AppsViewHolder {
         val inflater= LayoutInflater.from(p0.context)
         val binding=AppItemBinding.inflate(inflater)
@@ -51,10 +38,23 @@ class AppListAdapter(private var apps: List<PackageInfo>,
             binding.appInfo=item.applicationInfo
             binding.packageInfo=item
 
+            if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.N)
+            {
+                binding.min.text= "Min SDK:"+item.applicationInfo.minSdkVersion.toString()
+            }
+            else
+                binding.min.visibility=View.GONE
+
             val isDebuggable = 0 != item.applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE
             binding.isDebugBuild=isDebuggable
 
-            binding.listener=object : AppListActionListener{
+            binding.listener=object : AppListActionListener {
+                override fun onClickLogo() {
+                    itemView.context.apply {
+                        startActivity(packageManager.getLaunchIntentForPackage(item.packageName))
+                    }
+                }
+
                 override fun openAppSettings() {
                     val intent = Intent()
                     intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
@@ -68,7 +68,7 @@ class AppListAdapter(private var apps: List<PackageInfo>,
                 }
 
                 override fun onClick() {
-
+                    mainViewModel.openAppEvent.value=item.packageName
                 }
 
                 override fun goToPlayStore() {

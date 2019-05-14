@@ -8,7 +8,7 @@
 
         <variable
                 name="viewmodel"
-                type="com.droidmonk.appinfo.MainViewModel" />
+                type="com.droidmonk.appinfo.apps.AppListViewModel" />
 
     </data>
 
