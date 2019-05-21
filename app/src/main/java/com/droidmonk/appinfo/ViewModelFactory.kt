@@ -32,9 +32,5 @@ class ViewModelFactory private constructor (private val app:Application): ViewMo
                 INSTANCE ?: ViewModelFactory(application)
                     .also { INSTANCE = it }
             }
-
-
-
-
     }
 }

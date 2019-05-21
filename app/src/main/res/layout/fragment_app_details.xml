@@ -5,7 +5,6 @@
     <data>
 
         <import type="android.view.View"/>
-        <import type="java.lang.Integer"/>
         <import type="android.view.View.OnClickListener"/>
 
         <variable

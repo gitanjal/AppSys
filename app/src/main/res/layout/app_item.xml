@@ -17,7 +17,6 @@
 >
 
     <data>
-        <import type="java.lang.Integer"/>
         <import type="android.view.View.OnClickListener"/>
 
         <variable

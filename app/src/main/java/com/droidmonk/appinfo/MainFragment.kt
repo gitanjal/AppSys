@@ -34,29 +34,57 @@ class MainFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_main, container, false)
+        val view:View= inflater.inflate(R.layout.fragment_main, container, false)
+      /*  pager = activity?.findViewById(R.id.pager)!!
+        tabs = activity?.findViewById(R.id.tabs)!!
+*/
+        return view;
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
+       // prepareFragments()
 
-        if(fragmentList.size==0) {
-            fragmentList.add(AppFragment.newInstance(KEY_FILTER_DOWNLOADED))
-            fragmentList.add(AppFragment.newInstance(KEY_FILTER_SYS))
-            fragmentList.add(AppFragment.newInstance(KEY_FILTER_DEBUG))
+    }
 
-            fragmentTitleList.add("Downloaded")
-            fragmentTitleList.add("System")
-            fragmentTitleList.add("Debug")
-        }
-        pager = activity?.findViewById(R.id.pager)!!
-        tabs = activity?.findViewById(R.id.tabs)!!
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        setUpViewPager()
+    }
+
+    /*Prepare fragments*/
+    fun prepareFragments()
+    {
+        fragmentList.add(AppFragment.newInstance(KEY_FILTER_DOWNLOADED))
+        fragmentList.add(AppFragment.newInstance(KEY_FILTER_SYS))
+        fragmentList.add(AppFragment.newInstance(KEY_FILTER_DEBUG))
+
+        fragmentTitleList.add("Downloaded")
+        fragmentTitleList.add("System")
+        fragmentTitleList.add("Debug")
 
         adapter = PagerAdapter(this!!.childFragmentManager!!, fragmentList, fragmentTitleList)
-        pager.adapter = adapter
 
-        tabs.setupWithViewPager(pager)
+    }
+
+    /*Loda the viewpager*/
+    fun setUpViewPager() {
+        fragmentList.add(AppFragment.newInstance(KEY_FILTER_DOWNLOADED))
+        fragmentList.add(AppFragment.newInstance(KEY_FILTER_SYS))
+        fragmentList.add(AppFragment.newInstance(KEY_FILTER_DEBUG))
+
+        fragmentTitleList.add("Downloaded")
+        fragmentTitleList.add("System")
+        fragmentTitleList.add("Debug")
+
+          pager = activity?.findViewById(R.id.pager)!!
+          tabs = activity?.findViewById(R.id.tabs)!!
+
+         adapter = PagerAdapter(this!!.childFragmentManager!!, fragmentList, fragmentTitleList)
+         pager.adapter = adapter
+         tabs.setupWithViewPager(pager)
 
     }
 }
