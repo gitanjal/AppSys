@@ -3,4 +3,8 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="nav_all">All</string>
+    <string name="nav_system">System</string>
+    <string name="nav_downloaded">Downloaded</string>
+    <string name="menu_filter">Filter</string>
 </resources>

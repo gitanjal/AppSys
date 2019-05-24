@@ -1,31 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:orientation="vertical">
+    <android.support.v7.widget.RecyclerView
+            android:id="@+id/app_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+    />
+</RelativeLayout>
 
-    <data>
-
-        <import type="android.view.View" />
-
-        <variable
-                name="viewmodel"
-                type="com.droidmonk.appinfo.apps.AppListViewModel" />
-
-    </data>
-
-    <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:clickable="true"
-                android:orientation="vertical">
-
-        <android.support.v7.widget.RecyclerView
-                android:id="@+id/app_list"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:items="@{viewmodel.items}"
-        >
-
-        </android.support.v7.widget.RecyclerView>
-    </RelativeLayout>
-</layout>
 

@@ -1,94 +1,123 @@
 package com.droidmonk.appinfo.apps
 
 
-import android.arch.lifecycle.Observer
+import android.content.pm.ApplicationInfo
+import android.content.pm.PackageInfo
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
+import android.support.v7.widget.PopupMenu
+import android.view.*
+import android.widget.Toast
 import com.droidmonk.appinfo.R
-import com.droidmonk.appinfo.databinding.FragmentAppsBinding
-import com.droidmonk.appinfo.obtainViewModel
-import java.util.ArrayList
-
+import kotlinx.android.synthetic.main.fragment_apps.*
 
 class AppFragment : Fragment() {
 
-    private lateinit var viewDataBinding:FragmentAppsBinding
-    private lateinit var listAdapter: AppListAdapter
-    private lateinit var navController: NavController
+    private var items: ArrayList<PackageInfo> =  ArrayList<PackageInfo>()
+    private var filterKey=""
 
-    private var filterKey:String=""
+    private lateinit var listAdapter: AppListAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         // Inflate the layout for this fragment
-        viewDataBinding= FragmentAppsBinding.inflate(inflater,container,false).apply {
-            viewmodel =
-                obtainViewModel(AppListViewModel::class.java).apply{
-                    openAppEvent.observe(this@AppFragment, Observer<String> { packageName ->
-                    if (packageName != null) {
-                        openAppDetails(packageName)
-                    }
-                })
-        }
-        }
-        return viewDataBinding.root
-    }
-
-    private fun openAppDetails(packageName: String) {
-
-        var bundle = Bundle().apply {
-            putString("packageName",packageName)
-        }
-        navController.navigate(R.id.appDetailsFragment,bundle)
+        val view = inflater.inflate(R.layout.fragment_apps, container, false)
+        setHasOptionsMenu(true)
+        return view
 
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
         setupListAdapter()
-        val host: NavHostFragment = activity?.supportFragmentManager
-            ?.findFragmentById(R.id.nav_host_fragment) as NavHostFragment? ?: return
-
-        navController = host.navController
+        updateList()
 
     }
 
-
-    override fun onResume() {
-        super.onResume()
-        filterKey=arguments?.getString(KEY_FILTER)?:""
-        viewDataBinding.viewmodel?.start(filterKey)
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.app_fr_menu, menu)
     }
+
+    override fun onOptionsItemSelected(item: MenuItem?)=
+        when(item?.itemId){
+            R.id.menu_filter->
+            {
+                showFilteringPopUpMenu()
+                true
+            }
+            else->false
+        }
 
     private fun setupListAdapter() {
 
-        viewDataBinding.appList.layoutManager= LinearLayoutManager(activity)
-        val viewModel = viewDataBinding.viewmodel
-        if (viewModel != null) {
-            listAdapter = AppListAdapter(ArrayList(0), viewModel)
-            viewDataBinding.appList.adapter = listAdapter
-        } else {
-         //   Log.w(TAG, "ViewModel not initialized when attempting to set up adapter.")
+        listAdapter = AppListAdapter(items)
+        app_list.layoutManager = LinearLayoutManager(activity)
+        app_list.adapter = listAdapter
+
+    }
+
+    private fun showFilteringPopUpMenu() {
+            PopupMenu(activity as AppCompatActivity, activity!!.findViewById<View>(R.id.menu_filter)).run {
+                menuInflater.inflate(R.menu.filter_menu, menu)
+
+                setOnMenuItemClickListener {
+                    val filterKeyNew =
+                        when (it.itemId) {
+                            R.id.all -> "all"
+                            R.id.system -> "system"
+                            R.id.downloaded -> "downloaded"
+                            else -> "all"
+                        }
+                    Toast.makeText(activity,filterKeyNew,Toast.LENGTH_LONG).show()
+                    updateList(filterKeyNew)
+                    true
+                }
+                show()
+            }
+    }
+
+    fun updateList(filterKey:String="all")
+    {
+        if(filterKey!=this.filterKey)
+        {
+            items= ArrayList<PackageInfo>()
+            getList(filterKey)
+            listAdapter.setAppList(items)
         }
     }
 
-    companion object {
-        val KEY_FILTER="key_filter"
-        val KEY_FILTER_DOWNLOADED:String="downloaded"
-        val KEY_FILTER_SYS:String="system"
-        val KEY_FILTER_DEBUG:String="debug"
-        fun newInstance(filterKey: String) = AppFragment().apply {
-            arguments=Bundle().apply {
-                putString(KEY_FILTER,filterKey)
+    fun getList(filter: String) {
+
+        when(filter)
+        {
+            "all"->items = activity?.packageManager?.getInstalledPackages(0) as ArrayList<PackageInfo>
+            "system"->{
+                for (pi in activity?.packageManager?.getInstalledPackages(0)!!)
+                {
+                    if (pi.applicationInfo.flags and (ApplicationInfo.FLAG_UPDATED_SYSTEM_APP or ApplicationInfo.FLAG_SYSTEM) > 0) {
+                        items.add(pi)
+                    }
+                }
+            }
+            "downloaded"->{
+                for (pi in activity?.packageManager?.getInstalledPackages(0)!!)
+                {
+                    if (pi.applicationInfo.flags and (ApplicationInfo.FLAG_UPDATED_SYSTEM_APP or ApplicationInfo.FLAG_SYSTEM) > 0) {
+
+                    } else {
+                        items.add(pi)
+                    }
+                }
             }
         }
+
     }
+
+
 }
