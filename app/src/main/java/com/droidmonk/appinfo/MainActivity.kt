@@ -1,15 +1,7 @@
 package com.droidmonk.appinfo
 
-import android.content.Context
-import android.content.pm.ApplicationInfo
-import android.content.pm.PackageInfo
-import android.hardware.Sensor
-import android.hardware.Sensor.TYPE_ALL
-import android.hardware.SensorManager
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.util.DisplayMetrics
-import android.util.Log
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -36,17 +28,5 @@ class MainActivity : AppCompatActivity() {
 
 
     }
-
-
-    override fun onRestart() {
-        super.onRestart()
-//        setupViewFragment()
-
-    }
-
-    private fun setupViewFragment() {
-        navController.navigate(R.id.mainFragment)
-    }
-
 
 }
