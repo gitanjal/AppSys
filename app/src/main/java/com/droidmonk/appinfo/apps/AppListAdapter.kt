@@ -26,8 +26,6 @@ class AppListAdapter(private var apps: List<PackageInfo>,
     override fun getItemCount(): Int = apps.size
     override fun onBindViewHolder(holder: AppsViewHolder, position: Int) {
         holder.bind(apps.get(position))
-
-
     }
 
     inner class AppsViewHolder (val binding: AppItemBinding): RecyclerView.ViewHolder(binding.root) {

@@ -19,9 +19,6 @@ import com.droidmonk.appinfo.apps.AppFragment.Companion.KEY_FILTER_SYS
  */
 class MainFragment : Fragment() {
 
-    companion object {
-        fun newInstance()=MainFragment()
-    }
 
     private lateinit var pager: ViewPager
     private lateinit var tabs:TabLayout
@@ -44,7 +41,7 @@ class MainFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-       // prepareFragments()
+        prepareFragments()
 
     }
 
@@ -71,13 +68,6 @@ class MainFragment : Fragment() {
 
     /*Loda the viewpager*/
     fun setUpViewPager() {
-        fragmentList.add(AppFragment.newInstance(KEY_FILTER_DOWNLOADED))
-        fragmentList.add(AppFragment.newInstance(KEY_FILTER_SYS))
-        fragmentList.add(AppFragment.newInstance(KEY_FILTER_DEBUG))
-
-        fragmentTitleList.add("Downloaded")
-        fragmentTitleList.add("System")
-        fragmentTitleList.add("Debug")
 
           pager = activity?.findViewById(R.id.pager)!!
           tabs = activity?.findViewById(R.id.tabs)!!
