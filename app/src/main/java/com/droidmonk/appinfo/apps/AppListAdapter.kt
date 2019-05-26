@@ -36,6 +36,8 @@ class AppListAdapter(private var apps: List<PackageInfo>
             itemView.title.text=item.applicationInfo.loadLabel(itemView.context.packageManager).toString()
             itemView.package_name.text=item.applicationInfo.packageName
             itemView.version.text="Version : "+item.versionName+" ("+item.versionCode+")"
+            itemView.app_icon.setImageDrawable(item.applicationInfo.loadIcon(itemView.context.packageManager))
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 itemView.min.text="Min SDK:"+item.applicationInfo.minSdkVersion.toString()
             }
