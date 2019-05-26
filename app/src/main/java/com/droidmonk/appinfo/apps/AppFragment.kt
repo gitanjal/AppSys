@@ -4,19 +4,16 @@ package com.droidmonk.appinfo.apps
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.PopupMenu
+import androidx.fragment.app.Fragment
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.appcompat.widget.PopupMenu
 import android.view.*
 import android.widget.Toast
 import com.droidmonk.appinfo.R
 import kotlinx.android.synthetic.main.fragment_apps.*
 
 class AppFragment : Fragment() {
-
-    private var items: ArrayList<PackageInfo> =  ArrayList<PackageInfo>()
-    private var filterKey=""
 
     private lateinit var listAdapter: AppListAdapter
 
@@ -56,7 +53,7 @@ class AppFragment : Fragment() {
 
     private fun setupListAdapter() {
 
-        listAdapter = AppListAdapter(items)
+        listAdapter = AppListAdapter(ArrayList())
         app_list.layoutManager = LinearLayoutManager(activity)
         app_list.adapter = listAdapter
 
@@ -82,42 +79,7 @@ class AppFragment : Fragment() {
             }
     }
 
-    fun updateList(filterKey:String="all")
-    {
-        if(filterKey!=this.filterKey)
-        {
-            items= ArrayList<PackageInfo>()
-            getList(filterKey)
-            listAdapter.setAppList(items)
-        }
-    }
 
-    fun getList(filter: String) {
-
-        when(filter)
-        {
-            "all"->items = activity?.packageManager?.getInstalledPackages(0) as ArrayList<PackageInfo>
-            "system"->{
-                for (pi in activity?.packageManager?.getInstalledPackages(0)!!)
-                {
-                    if (pi.applicationInfo.flags and (ApplicationInfo.FLAG_UPDATED_SYSTEM_APP or ApplicationInfo.FLAG_SYSTEM) > 0) {
-                        items.add(pi)
-                    }
-                }
-            }
-            "downloaded"->{
-                for (pi in activity?.packageManager?.getInstalledPackages(0)!!)
-                {
-                    if (pi.applicationInfo.flags and (ApplicationInfo.FLAG_UPDATED_SYSTEM_APP or ApplicationInfo.FLAG_SYSTEM) > 0) {
-
-                    } else {
-                        items.add(pi)
-                    }
-                }
-            }
-        }
-
-    }
 
 
 }
