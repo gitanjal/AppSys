@@ -12,35 +12,39 @@ class AppsViewModel(application:Application): AndroidViewModel(application) {
     /*
     * We won't need this interface when we use LiveData
     * */
-    interface AppListEventListener
+    interface AppsEventListener
     {
         fun onListChange(items:ArrayList<PackageInfo>)
     }
-    private lateinit var lisener:AppListEventListener
+    private lateinit var lisener:AppsEventListener
 
     private val context: Context = application.applicationContext
     private var items: ArrayList<PackageInfo> =  ArrayList<PackageInfo>()
-    private var filterKey=""
+    var filterKey="all"
+        set(value) {
 
+            field = value
+            updateList()
 
+        }
 
     fun start()
     {
         updateList()
     }
 
-    fun setListener(listener:AppListEventListener)
+    fun setListener(listener:AppsEventListener)
     {
         this.lisener=listener
     }
 
 
-    fun updateList(filterKey:String="all")
+    fun updateList()
     {
-        if(filterKey!=this.filterKey)
-        {
+
+            items.clear()
             getList(filterKey)
-        }
+
     }
 
 
@@ -68,6 +72,8 @@ class AppsViewModel(application:Application): AndroidViewModel(application) {
                 }
             }
         }
+
+        this.lisener.onListChange(items)
 
     }
 

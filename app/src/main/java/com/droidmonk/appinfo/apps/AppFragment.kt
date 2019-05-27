@@ -1,7 +1,6 @@
 package com.droidmonk.appinfo.apps
 
 
-import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -10,12 +9,27 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.appcompat.widget.PopupMenu
 import android.view.*
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProviders
 import com.droidmonk.appinfo.R
 import kotlinx.android.synthetic.main.fragment_apps.*
 
 class AppFragment : Fragment() {
 
     private lateinit var listAdapter: AppListAdapter
+    private lateinit var viewModel: AppsViewModel
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        viewModel= ViewModelProviders.of(this).get(AppsViewModel::class.java)
+        viewModel.setListener(object : AppsViewModel.AppsEventListener{
+            override fun onListChange(items: ArrayList<PackageInfo>) {
+
+                listAdapter.setAppList(items)
+
+            }
+        })
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,11 +43,17 @@ class AppFragment : Fragment() {
 
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        viewModel.start()
+    }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+
         setupListAdapter()
-        updateList()
 
     }
 
@@ -54,6 +74,7 @@ class AppFragment : Fragment() {
     private fun setupListAdapter() {
 
         listAdapter = AppListAdapter(ArrayList())
+
         app_list.layoutManager = LinearLayoutManager(activity)
         app_list.adapter = listAdapter
 
@@ -72,7 +93,7 @@ class AppFragment : Fragment() {
                             else -> "all"
                         }
                     Toast.makeText(activity,filterKeyNew,Toast.LENGTH_LONG).show()
-                    updateList(filterKeyNew)
+                    viewModel.filterKey=filterKeyNew
                     true
                 }
                 show()
