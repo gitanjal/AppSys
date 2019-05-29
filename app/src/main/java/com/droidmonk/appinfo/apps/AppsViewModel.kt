@@ -5,6 +5,11 @@ import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import androidx.lifecycle.AndroidViewModel
+import android.R
+import android.os.Handler
+import androidx.core.os.HandlerCompat.postDelayed
+
+
 
 /*ViewModel without LiveData*/
 class AppsViewModel(application:Application): AndroidViewModel(application) {
@@ -74,6 +79,7 @@ class AppsViewModel(application:Application): AndroidViewModel(application) {
         }
 
         this.lisener.onListChange(items)
+
 
     }
 

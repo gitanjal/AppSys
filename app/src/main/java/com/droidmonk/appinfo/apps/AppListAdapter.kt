@@ -1,5 +1,6 @@
 package com.droidmonk.appinfo.apps
 
+import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.os.Build
 import androidx.recyclerview.widget.RecyclerView
@@ -37,6 +38,15 @@ class AppListAdapter(private var apps: List<PackageInfo>
             itemView.package_name.text=item.applicationInfo.packageName
             itemView.version.text="Version : "+item.versionName+" ("+item.versionCode+")"
             itemView.app_icon.setImageDrawable(item.applicationInfo.loadIcon(itemView.context.packageManager))
+
+            if (item.applicationInfo.flags and (ApplicationInfo.FLAG_UPDATED_SYSTEM_APP or ApplicationInfo.FLAG_SYSTEM) > 0) {
+                itemView.title.text=item.applicationInfo.loadLabel(itemView.context.packageManager).toString()+"(System)"
+
+            }
+            else
+            {
+                itemView.title.text=item.applicationInfo.loadLabel(itemView.context.packageManager).toString()+"(Downloaded)"
+            }
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 itemView.min.text="Min SDK:"+item.applicationInfo.minSdkVersion.toString()
