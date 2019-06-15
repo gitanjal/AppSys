@@ -4,19 +4,19 @@ package com.droidmonk.appinfo.apps
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.PopupMenu
 import android.view.*
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.PopupMenu
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.droidmonk.appinfo.R
 import kotlinx.android.synthetic.main.fragment_apps.*
 
 class AppFragment : Fragment() {
 
     private var items: ArrayList<PackageInfo> =  ArrayList<PackageInfo>()
-    private var filterKey=""
+    private var filterKey="all"
 
     private lateinit var listAdapter: AppListAdapter
 
@@ -32,6 +32,9 @@ class AppFragment : Fragment() {
 
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+    }
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
@@ -54,6 +57,7 @@ class AppFragment : Fragment() {
             else->false
         }
 
+
     private fun setupListAdapter() {
 
         listAdapter = AppListAdapter(items)
@@ -75,21 +79,26 @@ class AppFragment : Fragment() {
                             else -> "all"
                         }
                     Toast.makeText(activity,filterKeyNew,Toast.LENGTH_LONG).show()
-                    updateList(filterKeyNew)
+
+                    if(filterKeyNew!=filterKey)
+                    {
+                        filterKey=filterKeyNew
+                    }
+
+                    updateList()
                     true
                 }
                 show()
             }
     }
 
-    fun updateList(filterKey:String="all")
+    fun updateList()
     {
-        if(filterKey!=this.filterKey)
-        {
+
             items= ArrayList<PackageInfo>()
-            getList(filterKey)
+            getList(this.filterKey)
             listAdapter.setAppList(items)
-        }
+
     }
 
     fun getList(filter: String) {

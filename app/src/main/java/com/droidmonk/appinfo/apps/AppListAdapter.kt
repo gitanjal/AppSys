@@ -1,11 +1,12 @@
 package com.droidmonk.appinfo.apps
 
+import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.os.Build
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.droidmonk.appinfo.R
 import kotlinx.android.synthetic.main.app_item.view.*
 
@@ -43,6 +44,15 @@ class AppListAdapter(private var apps: List<PackageInfo>
             }
             else
                 itemView.min.visibility=View.GONE
+
+
+            if (item.applicationInfo.flags and (ApplicationInfo.FLAG_UPDATED_SYSTEM_APP or ApplicationInfo.FLAG_SYSTEM) > 0) {
+                itemView.title.text=item.applicationInfo.loadLabel(itemView.context.packageManager).toString()+"(System)"
+            }
+            else
+            {
+                itemView.title.text=item.applicationInfo.loadLabel(itemView.context.packageManager).toString()+"(Downloaded)"
+            }
 
         }
     }
