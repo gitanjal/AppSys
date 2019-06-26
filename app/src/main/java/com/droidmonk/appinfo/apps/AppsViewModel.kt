@@ -5,23 +5,11 @@ import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import androidx.lifecycle.AndroidViewModel
-import android.R
-import android.os.Handler
-import androidx.core.os.HandlerCompat.postDelayed
-
 
 
 /*ViewModel without LiveData*/
 class AppsViewModel(application:Application): AndroidViewModel(application) {
 
-    /*
-    * We won't need this interface when we use LiveData
-    * */
-    interface AppsEventListener
-    {
-        fun onListChange(items:ArrayList<PackageInfo>)
-    }
-    private lateinit var lisener:AppsEventListener
 
     private val context: Context = application.applicationContext
     private var items: ArrayList<PackageInfo> =  ArrayList<PackageInfo>()
@@ -38,20 +26,11 @@ class AppsViewModel(application:Application): AndroidViewModel(application) {
         updateList()
     }
 
-    fun setListener(listener:AppsEventListener)
-    {
-        this.lisener=listener
-    }
-
-
     fun updateList()
     {
-
             items.clear()
             getList(filterKey)
-
     }
-
 
     fun getList(filter: String) {
 
@@ -77,10 +56,5 @@ class AppsViewModel(application:Application): AndroidViewModel(application) {
                 }
             }
         }
-
-        this.lisener.onListChange(items)
-
-
     }
-
 }

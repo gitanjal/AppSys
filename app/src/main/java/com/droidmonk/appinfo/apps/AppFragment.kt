@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.appcompat.widget.PopupMenu
 import android.view.*
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.droidmonk.appinfo.R
 import kotlinx.android.synthetic.main.fragment_apps.*
@@ -21,14 +22,16 @@ class AppFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel= ViewModelProviders.of(this).get(AppsViewModel::class.java)
-        viewModel.setListener(object : AppsViewModel.AppsEventListener{
-            override fun onListChange(items: ArrayList<PackageInfo>) {
+        val viewModelProvider:ViewModelProvider=ViewModelProviders.of(this)
+        viewModel= viewModelProvider.get(AppsViewModel::class.java)
 
-                listAdapter.setAppList(items)
 
-            }
-        })
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        viewModel.start()
     }
 
     override fun onCreateView(
@@ -43,18 +46,12 @@ class AppFragment : Fragment() {
 
     }
 
-    override fun onResume() {
-        super.onResume()
 
-        viewModel.start()
-    }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-
         setupListAdapter()
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
