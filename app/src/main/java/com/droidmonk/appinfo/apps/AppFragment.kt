@@ -27,6 +27,7 @@ class AppFragment : Fragment() {
 
                 listAdapter.setAppList(items)
 
+                //app_list.setPadding(10,10,10,10)
             }
         })
     }

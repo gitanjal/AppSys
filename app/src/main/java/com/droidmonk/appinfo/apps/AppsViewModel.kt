@@ -6,6 +6,8 @@ import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import androidx.lifecycle.AndroidViewModel
 import android.R
+import android.content.pm.PackageManager
+import android.os.AsyncTask
 import android.os.Handler
 import androidx.core.os.HandlerCompat.postDelayed
 
@@ -48,12 +50,14 @@ class AppsViewModel(application:Application): AndroidViewModel(application) {
     {
 
             items.clear()
-            getList(filterKey)
+
+            GetAppsAsyncTask(lisener,filterKey,context.packageManager).execute()
+
 
     }
 
 
-    fun getList(filter: String) {
+    /*fun getList(filter: String) {
 
         when(filter)
         {
@@ -80,7 +84,59 @@ class AppsViewModel(application:Application): AndroidViewModel(application) {
 
         this.lisener.onListChange(items)
 
+    }
+*/
+
+    class GetAppsAsyncTask(listener:AppsEventListener,filter: String,pm:PackageManager) : AsyncTask<Void, Void, ArrayList<PackageInfo>>() {
+        var listener:AppsEventListener
+        var filterStr:String
+        var packageManager:PackageManager
+//        var applicationContext:Context
+        private var items: ArrayList<PackageInfo> =  ArrayList<PackageInfo>()
+
+        init {
+            this.listener=listener
+            this.filterStr=filter
+            this.packageManager=pm
+//            this.applicationContext=context
+        }
+
+        override fun doInBackground(vararg params: Void?): ArrayList<PackageInfo> {
+            Thread.sleep(60000)
+            when(filterStr)
+            {
+                "all"->items = packageManager?.getInstalledPackages(0) as ArrayList<PackageInfo>
+                "system"->{
+                    for (pi in packageManager?.getInstalledPackages(0)!!)
+                    {
+                        if (pi.applicationInfo.flags and (ApplicationInfo.FLAG_UPDATED_SYSTEM_APP or ApplicationInfo.FLAG_SYSTEM) > 0) {
+                            items.add(pi)
+                        }
+                    }
+                }
+                "downloaded"->{
+                    for (pi in packageManager?.getInstalledPackages(0)!!)
+                    {
+                        if (pi.applicationInfo.flags and (ApplicationInfo.FLAG_UPDATED_SYSTEM_APP or ApplicationInfo.FLAG_SYSTEM) > 0) {
+
+                        } else {
+                            items.add(pi)
+                        }
+                    }
+                }
+            }
+
+            return items
+        }
+
+        override fun onPostExecute(result: ArrayList<PackageInfo>?) {
+            super.onPostExecute(result)
+
+            result?.let { this.listener.onListChange(it) }
+
+        }
 
     }
+
 
 }
