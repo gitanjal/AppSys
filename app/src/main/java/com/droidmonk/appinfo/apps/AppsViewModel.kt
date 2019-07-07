@@ -65,8 +65,8 @@ class AppsViewModel(application:Application): AndroidViewModel(application) {
 
         override fun doInBackground(vararg params: Void?): ArrayList<PackageInfo> {
 
-            /*Adding a delay of 20 seconds*/
-            Thread.sleep(20000)
+            /*Adding a delay of 5 seconds*/
+            Thread.sleep(5000)
             when(filterStr)
             {
                 "all"->items = packageManager?.getInstalledPackages(0) as ArrayList<PackageInfo>

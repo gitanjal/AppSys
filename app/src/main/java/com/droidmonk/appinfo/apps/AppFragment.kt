@@ -27,6 +27,7 @@ class AppFragment : Fragment() {
 
                 listAdapter.setAppList(items)
 
+                text.setText("Showing "+viewModel.filterKey+" apps")
             }
         })
     }
