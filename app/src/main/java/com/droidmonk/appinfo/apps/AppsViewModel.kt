@@ -16,14 +16,12 @@ import androidx.core.os.HandlerCompat.postDelayed
 /*ViewModel without LiveData*/
 class AppsViewModel(application:Application): AndroidViewModel(application) {
 
-    /*
-    * We won't need this interface when we use LiveData
-    * */
     interface AppsEventListener
     {
         fun onListChange(items:ArrayList<PackageInfo>)
     }
     private lateinit var lisener:AppsEventListener
+
 
     private val context: Context = application.applicationContext
     private var items: ArrayList<PackageInfo> =  ArrayList<PackageInfo>()
@@ -48,61 +46,27 @@ class AppsViewModel(application:Application): AndroidViewModel(application) {
 
     fun updateList()
     {
-
             items.clear()
-
             GetAppsAsyncTask(lisener,filterKey,context.packageManager).execute()
-
-
     }
 
-
-    /*fun getList(filter: String) {
-
-        when(filter)
-        {
-            "all"->items = context.packageManager?.getInstalledPackages(0) as ArrayList<PackageInfo>
-            "system"->{
-                for (pi in context.packageManager?.getInstalledPackages(0)!!)
-                {
-                    if (pi.applicationInfo.flags and (ApplicationInfo.FLAG_UPDATED_SYSTEM_APP or ApplicationInfo.FLAG_SYSTEM) > 0) {
-                        items.add(pi)
-                    }
-                }
-            }
-            "downloaded"->{
-                for (pi in context.packageManager?.getInstalledPackages(0)!!)
-                {
-                    if (pi.applicationInfo.flags and (ApplicationInfo.FLAG_UPDATED_SYSTEM_APP or ApplicationInfo.FLAG_SYSTEM) > 0) {
-
-                    } else {
-                        items.add(pi)
-                    }
-                }
-            }
-        }
-
-        this.lisener.onListChange(items)
-
-    }
-*/
 
     class GetAppsAsyncTask(listener:AppsEventListener,filter: String,pm:PackageManager) : AsyncTask<Void, Void, ArrayList<PackageInfo>>() {
         var listener:AppsEventListener
         var filterStr:String
         var packageManager:PackageManager
-//        var applicationContext:Context
         private var items: ArrayList<PackageInfo> =  ArrayList<PackageInfo>()
 
         init {
             this.listener=listener
             this.filterStr=filter
             this.packageManager=pm
-//            this.applicationContext=context
         }
 
         override fun doInBackground(vararg params: Void?): ArrayList<PackageInfo> {
-            Thread.sleep(60000)
+
+            /*Adding a delay of 20 seconds*/
+            Thread.sleep(20000)
             when(filterStr)
             {
                 "all"->items = packageManager?.getInstalledPackages(0) as ArrayList<PackageInfo>
@@ -135,8 +99,5 @@ class AppsViewModel(application:Application): AndroidViewModel(application) {
             result?.let { this.listener.onListChange(it) }
 
         }
-
     }
-
-
 }
