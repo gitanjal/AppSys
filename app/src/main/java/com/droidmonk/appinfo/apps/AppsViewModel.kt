@@ -4,13 +4,9 @@ import android.app.Application
 import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
-import androidx.lifecycle.AndroidViewModel
-import android.R
 import android.content.pm.PackageManager
 import android.os.AsyncTask
-import android.os.Handler
-import androidx.core.os.HandlerCompat.postDelayed
-
+import androidx.lifecycle.AndroidViewModel
 
 
 /*ViewModel without LiveData*/
